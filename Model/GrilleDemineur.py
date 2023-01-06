@@ -64,3 +64,13 @@ def construireGrilleDemineur(nb_lignes:int, nb_colonnes:int)->list:
             ligne.append(construireCellule())
         grille.append(ligne)
     return grille
+
+def getNbLignesGrilleDemineur(grille:list)->int:
+    if not type_grille_demineur(grille):
+        raise TypeError('getNbLignesGrilleDemineur : Le paramètre n’est pas une grille')
+    return len(grille)
+
+def getNbColonnesGrilleDemineur(grille:list)->int:
+    if not type_grille_demineur(grille):
+        raise TypeError('getNbColonnesGrilleDemineur : Le paramètre n’est pas une grille')
+    return len(grille[0])
