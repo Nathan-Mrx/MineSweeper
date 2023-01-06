@@ -23,6 +23,13 @@ def type_cellule(cell: dict) -> bool:
 def isContenuCorrect(n:int):
     return isinstance(n, int) and 0 <= n <= 8 or n == const.ID_MINE
 
-print(isContenuCorrect(2))
-print(isContenuCorrect(4))
-print(isContenuCorrect(9))
+
+def construireCellule(c:int=0, v:bool=False)-> dict:
+    if c != const.ID_MINE and 0 > c or 8 < c:
+        raise ValueError(f'construireCellule : le contenu {c} n’est pas correct')
+    if not isinstance(v, bool):
+        raise TypeError(f'construireCellule : le second paramètre {type(v)} n’est pas un booléen')
+    dic= {}
+    dic['Contenu']=c
+    dic['Visible']=v
+    return dic
