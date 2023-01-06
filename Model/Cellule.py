@@ -24,12 +24,48 @@ def isContenuCorrect(n:int):
     return isinstance(n, int) and 0 <= n <= 8 or n == const.ID_MINE
 
 
-def construireCellule(c:int=0, v:bool=False)-> dict:
-    if c != const.ID_MINE and 0 > c or 8 < c:
-        raise ValueError(f'construireCellule : le contenu {c} n’est pas correct')
-    if not isinstance(v, bool):
-        raise TypeError(f'construireCellule : le second paramètre {type(v)} n’est pas un booléen')
+def construireCellule(contenu:int=0, visible:bool=False)-> dict:
+    if contenu != const.ID_MINE and 0 > contenu or 8 < contenu:
+        raise ValueError(f'construireCellule : le contenu {contenu} n’est pas correct')
+    if not isinstance(visible, bool):
+        raise TypeError(f'construireCellule : le second paramètre {type(visible)} n’est pas un booléen')
     dic= {}
-    dic['Contenu']=c
-    dic['Visible']=v
+    dic['Contenu']=contenu
+    dic['Visible']=visible
     return dic
+
+def getContenuCellule(cell:dict)->int:
+    if not type_cellule(cell):
+        raise TypeError('getContenuCellule : Le paramètre n’est pas une cellule.')
+    return cell['Contenu']
+
+def isVisibleCellule(cell:dict)->int:
+    if not type_cellule(cell):
+        raise TypeError('isVisibleCellule : Le paramètre n’est pas une cellule.')
+    return cell['Visible']
+
+def setContenuCellule(cell:dict,c:int)->None:
+    if not type_cellule(cell):
+        raise TypeError('setContenuCellule : Le premier paramètre n’est pas une cellule.')
+    if not isinstance(c, int) or isinstance(c, bool):
+        raise TypeError('setContenuCellule : Le second paramètre n’est pas un entier.')
+    if c != const.ID_MINE and 0 > c or 8 < c:
+        raise ValueError(f'setContenuCellule : la valeur du contenu {c} n’est pas correcte.')
+    cell['Contenu']=c
+    return None
+
+def setVisibleCellule(cell:dict,v:bool)->None:
+    if not type_cellule(cell):
+        raise TypeError('setVisibleCellule : Le premier paramètre n’est pas une cellule.')
+    if not isinstance(v, bool):
+        raise TypeError('setVisibleCellule : Le second paramètre n’est pas un entier.')
+    cell['Visible']=v
+    return None
+
+def contientMineCellule(cell:dict)->bool:
+    if not type_cellule(cell):
+        raise TypeError('contientMineCellule : Le paramètre n’est pas une cellule.')
+    result = False
+    if cell['Contenu'] == const.ID_MINE:
+        result = True
+    return result
