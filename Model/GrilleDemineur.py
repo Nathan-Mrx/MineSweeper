@@ -99,7 +99,7 @@ def setContenuGrilleDemineur(grille:list,coord:tuple,contenu:int)->None:
     setContenuCellule(getCelluleGrilleDemineur(grille,coord),contenu)
     return None
 
-def isVisibleGrilleDemineur(grille:list,coord:tuple)->int:
+def isVisibleGrilleDemineur(grille:list,coord:tuple)->bool:
     return getCelluleGrilleDemineur(grille,coord)['Visible']
 
 def setVisibleGrilleDemineur(grille:list,coord:tuple,visible:int)->None:
@@ -108,3 +108,17 @@ def setVisibleGrilleDemineur(grille:list,coord:tuple,visible:int)->None:
 
 def contientMineGrilleDemineur(grille:list,coord:tuple)->bool:
     return contientMineCellule(getCelluleGrilleDemineur(grille,coord))
+
+def getCoordonneeVoisinsGrilleDemineur(grille:list, coord:tuple)->list:
+    if not type_grille_demineur(grille) or not type_coordonnee(coord):
+        raise TypeError('getCoordonneeVoisinsGrilleDemineur : un des paramètres n’est pas du bon type')
+    if not isCoordonneeCorrecte(grille,coord):
+        raise IndexError('getCoordonneeVoisinsGrilleDemineur :  la coordonnée n’est pas dans la grille.')
+    x = coord[0]
+    y = coord[1]
+    liste_voisins = []
+    for i in range(x-1, x+2):
+        for j in range(y-1, y+2):
+            if (i, j) != coord and 0<=i<=getNbLignesGrilleDemineur(grille)-1 and 0<=j<=getNbColonnesGrilleDemineur(grille)-1:
+                liste_voisins.append(construireCoordonnee(i, j))
+    return liste_voisins
