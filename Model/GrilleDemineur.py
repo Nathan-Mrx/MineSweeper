@@ -150,8 +150,8 @@ def placerMinesGrilleDemineur(grille: list, nb: int, coord: tuple)->None:
     exeptions=[coord]
     i = 0
     while i < nb:
-        x = randint(0,getNbLignesGrilleDemineur(grille)-1)
-        y = randint(0,getNbColonnesGrilleDemineur(grille)-1)
+        x = randint(0,getNbLignesGrilleDemineur(grille) - 1)
+        y = randint(0,getNbColonnesGrilleDemineur(grille) - 1)
         if (x, y) not in exeptions:
             setContenuGrilleDemineur(grille, (x, y), const.ID_MINE)
             exeptions.append((x, y))
@@ -159,3 +159,14 @@ def placerMinesGrilleDemineur(grille: list, nb: int, coord: tuple)->None:
     return None
 
 
+def compterMinesVoisinesGrilleDemineur(grille:list)->None:
+    for li in range(getNbLignesGrilleDemineur(grille)):
+        for ce in range(getNbColonnesGrilleDemineur(grille)):
+            if getContenuGrilleDemineur(grille, (li, ce)) != const.ID_MINE:
+                nbMines = 0
+                voisins = getCoordonneeVoisinsGrilleDemineur(grille, (li, ce))
+                for v in voisins:
+                    if getContenuGrilleDemineur(grille, v) == const.ID_MINE:
+                        nbMines += 1
+                setContenuGrilleDemineur(grille, (li, ce), nbMines)
+    return None
