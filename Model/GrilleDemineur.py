@@ -142,16 +142,16 @@ def getCoordonneeVoisinsGrilleDemineur(grille: list, coord: tuple) -> list:
     return liste_voisins
 
 
-def placerMinesGrilleDemineur(grille: list, nb: int, coord: tuple)->None:
+def placerMinesGrilleDemineur(grille: list, nb: int, coord: tuple) -> None:
     if nb < 0 or nb > getNbLignesGrilleDemineur(grille) * getNbColonnesGrilleDemineur(grille) - 1:
         raise ValueError('placerMinesGrilleDemineur : Nombre de bombes à placer incorrect')
     if not isCoordonneeCorrecte(grille, coord):
         raise IndexError('placerMinesGrilleDemineur : la coordonnée n’est pas dans la grille.')
-    exeptions=[coord]
+    exeptions = [coord]
     i = 0
     while i < nb:
-        x = randint(0,getNbLignesGrilleDemineur(grille) - 1)
-        y = randint(0,getNbColonnesGrilleDemineur(grille) - 1)
+        x = randint(0, getNbLignesGrilleDemineur(grille) - 1)
+        y = randint(0, getNbColonnesGrilleDemineur(grille) - 1)
         if (x, y) not in exeptions:
             setContenuGrilleDemineur(grille, (x, y), const.ID_MINE)
             exeptions.append((x, y))
@@ -160,7 +160,7 @@ def placerMinesGrilleDemineur(grille: list, nb: int, coord: tuple)->None:
     return None
 
 
-def compterMinesVoisinesGrilleDemineur(grille:list)->None:
+def compterMinesVoisinesGrilleDemineur(grille: list) -> None:
     for li in range(getNbLignesGrilleDemineur(grille)):
         for ce in range(getNbColonnesGrilleDemineur(grille)):
             if getContenuGrilleDemineur(grille, (li, ce)) != const.ID_MINE:
@@ -172,7 +172,8 @@ def compterMinesVoisinesGrilleDemineur(grille:list)->None:
                 setContenuGrilleDemineur(grille, (li, ce), nbMines)
     return None
 
-def getNbMinesGrilleDemineur(grille:list)->int:
+
+def getNbMinesGrilleDemineur(grille: list) -> int:
     if not type_grille_demineur(grille):
         raise ValueError('getNbMinesGrilleDemineur : le paramètre n’est pas une grille.')
     nbMines = 0
@@ -194,3 +195,16 @@ def getMinesRestantesGrilleDemineur(grille: list) -> int:
             if getAnnotationGrilleDemineur(grille, (li, ce)) == const.FLAG:
                 nbFlag += 1
     return getNbMinesGrilleDemineur(grille) - nbFlag
+
+
+def gagneGrilleDemineur(grille: list) -> bool:
+    cpt = 0
+    minesDecouvertes = False
+    for li in range(getNbLignesGrilleDemineur(grille)):
+        for ce in range(getNbColonnesGrilleDemineur(grille)):
+            if not contientMineGrilleDemineur(grille, (li, ce)) and isVisibleGrilleDemineur(grille, (li, ce)):
+                cpt += 1
+            if contientMineGrilleDemineur(grille, (li, ce)) and isVisibleGrilleDemineur(grille, (li, ce)):
+                minesDecouvertes = True
+    return getNbLignesGrilleDemineur(grille) * getNbColonnesGrilleDemineur(grille) - getNbMinesGrilleDemineur(
+        grille) == cpt and not minesDecouvertes
