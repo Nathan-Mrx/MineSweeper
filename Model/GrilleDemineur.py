@@ -54,12 +54,12 @@ def type_grille_demineur(grille: list) -> bool:
 
 def construireGrilleDemineur(nb_lignes: int, nb_colonnes: int) -> list:
     """
-        Détermine si le paramètre représente une grille d'un démineur.
+    Détermine si le paramètre représente une grille d'un démineur.
 
-        :param nb_lignes: nombre de lignes de la grille à créer
-        :param nb_colonnes: nombre de colonnes de la grille à créer
-        :return: grille de nb_lignes lignes et nb_colonnes colonnes
-        """
+    :param nb_lignes: nombre de lignes de la grille à créer
+    :param nb_colonnes: nombre de colonnes de la grille à créer
+    :return: grille de nb_lignes lignes et nb_colonnes colonnes
+    """
     if not isinstance(nb_lignes, int) or not isinstance(nb_colonnes, int):
         raise TypeError(
             f'construireGrilleDemineur : Le nombre de lignes {nb_lignes} ou de colonnes {nb_colonnes} n’est pas '
@@ -199,6 +199,7 @@ def getMinesRestantesGrilleDemineur(grille: list) -> int:
 
 def gagneGrilleDemineur(grille: list) -> bool:
     cpt = 0
+    nbFlag = 0
     minesDecouvertes = False
     for li in range(getNbLignesGrilleDemineur(grille)):
         for ce in range(getNbColonnesGrilleDemineur(grille)):
@@ -206,5 +207,23 @@ def gagneGrilleDemineur(grille: list) -> bool:
                 cpt += 1
             if contientMineGrilleDemineur(grille, (li, ce)) and isVisibleGrilleDemineur(grille, (li, ce)):
                 minesDecouvertes = True
+            if contientMineGrilleDemineur(grille, (li, ce)) and getAnnotationGrilleDemineur(grille, (li, ce)) == const.FLAG:
+                nbFlag += 1
     return getNbLignesGrilleDemineur(grille) * getNbColonnesGrilleDemineur(grille) - getNbMinesGrilleDemineur(
-        grille) == cpt and not minesDecouvertes
+        grille) == cpt and not minesDecouvertes and getNbMinesGrilleDemineur(grille) == nbFlag
+
+
+def perduGrilleDemineur(grille: list) -> bool:
+    perdu = False
+    for li in range(getNbLignesGrilleDemineur(grille)):
+        for ce in range(getNbColonnesGrilleDemineur(grille)):
+            if contientMineGrilleDemineur(grille, (li, ce)) and isVisibleGrilleDemineur(grille, (li, ce)):
+                perdu = True
+    return perdu
+
+
+def reinitialiserGrilleDemineur(grille: list) -> None:
+    for li in range(getNbLignesGrilleDemineur(grille)):
+        for ce in range(getNbColonnesGrilleDemineur(grille)):
+            reinitialiserCellule(getCelluleGrilleDemineur(grille, (li, ce)))
+    return None

@@ -98,3 +98,10 @@ def changeAnnotationCellule(cell: dict) -> None:
     annotations = (None, const.FLAG, const.DOUTE)
     cell[const.ANNOTATION] = annotations[(annotations.index(getAnnotationCellule(cell))+1)%3]
     return None
+
+
+def reinitialiserCellule(cell: dict) -> None:
+    cell['Contenu'] = 0
+    cell['Visible'] = False
+    cell[const.ANNOTATION] = None
+    return None
