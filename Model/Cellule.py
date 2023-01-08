@@ -43,7 +43,7 @@ def getContenuCellule(cell: dict) -> int:
     return cell['Contenu']
 
 
-def isVisibleCellule(cell: dict) -> int:
+def isVisibleCellule(cell: dict) -> bool:
     if not type_cellule(cell):
         raise TypeError('isVisibleCellule : Le paramètre n’est pas une cellule.')
     return cell['Visible']
