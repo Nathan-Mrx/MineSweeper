@@ -156,6 +156,7 @@ def placerMinesGrilleDemineur(grille: list, nb: int, coord: tuple)->None:
             setContenuGrilleDemineur(grille, (x, y), const.ID_MINE)
             exeptions.append((x, y))
             i += 1
+    compterMinesVoisinesGrilleDemineur(grille)
     return None
 
 
