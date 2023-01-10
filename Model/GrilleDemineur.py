@@ -411,3 +411,24 @@ def decouvrirGrilleDemineur(grille: list, coord: tuple) -> set:
     for elt in ensemble:
         setVisibleGrilleDemineur(grille, elt, True)
     return ensemble
+
+
+def simplifierGrilleDemineur(grille: list, coord: tuple) -> set:
+    ensemble = set()
+    pile = [coord]
+    while pile:
+        current = pile.pop()
+        if isVisibleGrilleDemineur(grille, current):
+            voisins = getCoordonneeVoisinsGrilleDemineur(grille, current)
+            nbFlagParmisVoisins = 0
+            for v in voisins:
+                if getAnnotationGrilleDemineur(grille, v) == const.FLAG:
+                    nbFlagParmisVoisins += 1
+            if nbFlagParmisVoisins == getContenuGrilleDemineur(grille, current):
+                for v in voisins:
+                    if v not in ensemble and not contientMineGrilleDemineur(grille, v):
+                        setVisibleGrilleDemineur(grille, v, True)
+                        ensemble.add(v)
+                        pile.append(v)
+    return ensemble
+
