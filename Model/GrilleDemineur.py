@@ -194,7 +194,7 @@ def setVisibleGrilleDemineur(grille: list, coord: tuple, visible: bool) -> None:
 
 def contientMineGrilleDemineur(grille: list, coord: tuple) -> bool:
     """
-    verifie si la cellule à la coordonnée coord dans la grille grille contient une mine ou non.
+    Verifie si la cellule à la coordonnée coord dans la grille grille contient une mine ou non.
 
     :param grille: grille de démineur
     :param coord: coordonnée où aller chercher la cellule
@@ -394,3 +394,20 @@ def reinitialiserGrilleDemineur(grille: list) -> None:
         for ce in range(getNbColonnesGrilleDemineur(grille)):
             reinitialiserCellule(getCelluleGrilleDemineur(grille, (li, ce)))
     return None
+
+
+def decouvrirGrilleDemineur(grille: list, coord: tuple) -> set:
+    ensemble = set()
+    pile = [coord]
+    while pile:
+        current = pile.pop()
+        ensemble.add(current)
+        if getContenuGrilleDemineur(grille, current) == 0:
+            voisins = getCoordonneeVoisinsGrilleDemineur(grille, current)
+            for v in voisins:
+                if not contientMineGrilleDemineur(grille, v) and v not in ensemble:
+                    pile.append(v)
+                    ensemble.add(v)
+    for elt in ensemble:
+        setVisibleGrilleDemineur(grille, elt, True)
+    return ensemble
