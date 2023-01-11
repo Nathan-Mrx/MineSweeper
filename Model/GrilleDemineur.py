@@ -432,3 +432,35 @@ def simplifierGrilleDemineur(grille: list, coord: tuple) -> set:
                         pile.append(v)
     return ensemble
 
+
+def ajouterFlagsGrilleDemineur(grille: list, coord: tuple) -> set:
+    ensemble = set()
+    voisins = getCoordonneeVoisinsGrilleDemineur(grille, coord)
+    nbNonVisibleParmisVoisins= 0
+    voisinsNonVisibles = []
+    for v in voisins:
+        if not isVisibleGrilleDemineur(grille, v):
+            nbNonVisibleParmisVoisins += 1
+            voisinsNonVisibles.append(v)
+    if getContenuGrilleDemineur(grille, coord) == nbNonVisibleParmisVoisins:
+        for v in voisinsNonVisibles:
+            getCelluleGrilleDemineur(grille, v)[const.ANNOTATION] = const.FLAG
+            ensemble.add(v)
+    return ensemble
+
+
+def simplifierToutGrilleDemineur(grille: list):
+    renduesVisibles = set()
+    drapeauxPlaces = set()
+    modif = True
+    while modif:
+        for ligne in range(getNbLignesGrilleDemineur(grille)):
+            for colonne in range(getNbColonnesGrilleDemineur(grille)):
+                if isVisibleGrilleDemineur(grille, (ligne, colonne)):
+                    a = ajouterFlagsGrilleDemineur(grille, (ligne, colonne))
+                    s = simplifierGrilleDemineur(grille, (ligne, colonne))
+                    renduesVisibles = renduesVisibles.union(s)
+                    drapeauxPlaces = drapeauxPlaces.union(a)
+                    if len(a) == 0 and len(s) == 0:
+                        modif=False
+    return (renduesVisibles, drapeauxPlaces)
